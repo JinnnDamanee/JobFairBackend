@@ -27,8 +27,8 @@ app.use(xss());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 const limiter = rateLimit({
-  windowMs: 10 * 60 * 1000, // 10 mins
-  max: 100,
+    windowMs: 10 * 60 * 1000, // 10 mins
+    max: 100,
 });
 app.use(limiter);
 app.use(hpp());
@@ -37,37 +37,39 @@ app.use("/api/v1/companies", companies);
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/bookings", bookings);
 
+const HOST = process.env.HOST || "http://localhost";
 const PORT = process.env.PORT || 5001;
 const server = app.listen(
-  PORT,
-  console.log(
-    "Server running in",
-    process.env.NODE_ENV,
-    "on http://localhost:" + PORT
-  )
+    PORT,
+    console.log(
+        "🚀 Server running in",
+        process.env.NODE_ENV,
+        `on ${HOST}:` + PORT
+    ),
+    console.log("📄 Swagger running in", `${HOST}:${PORT}/api-docs`)
 );
 
-const swaggerOptions={
-  swaggerDefinition:{
-    openapi: '3.0.0',
-    info: {
-    title: 'Library API',
-    version: '1.0.0',
-    description: 'Job Interview Booking API'
+const swaggerOptions = {
+    swaggerDefinition: {
+        openapi: "3.0.0",
+        info: {
+            title: "Library API",
+            version: "1.0.0",
+            description: "Job Interview Booking API",
+        },
+        servers: [
+            {
+                url: `${HOST}:${PORT}/api/v1`,
+            },
+        ],
     },
-    servers: [
-      {
-        url: 'http://localhost:5000/api/v1'
-      }
-    ],
-  },
-  apis:['./routes/*.js'],
+    apis: ["./routes/*.js"],
 };
-const swaggerDocs=swaggerJsDoc(swaggerOptions);
-app.use('/api-docs',swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 // Handle unhandled promise rejections
 process.on("unhandledRejection", (err, promise) => {
-  console.log(`Error: ${err.message}`);
-  server.close(() => process.exit(1));
+    console.log(`Error: ${err.message}`);
+    server.close(() => process.exit(1));
 });
