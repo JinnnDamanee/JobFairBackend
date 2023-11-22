@@ -71,17 +71,17 @@ exports.getBookings = async (req, res) => {
       user: req.user.id,
     }).populate({
       path: "company",
-      select: "name address tel image",
+      select: "name image position",
     });
   } else {
     query = Booking.find()
       .populate({
         path: "company",
-        select: "name address tel image",
+        select: "name image position",
       })
       .populate({
         path: "user",
-        select: "name email tel",
+        select: "name email",
       });
   }
   try {
