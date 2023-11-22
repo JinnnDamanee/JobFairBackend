@@ -117,26 +117,8 @@ exports.getBookingsByCompany = async (req, res) => {
       message: "Please provide valid company id",
     });
   }
-
-  if (req.user.role !== "admin") {
-    query = Booking.find({
-      user: req.user.id,
-      company: companyId,
-    }).populate({
-      path: "company",
-      select: "name address tel image",
-    });
-  } else {
-    query = Booking.find({ company: companyId })
-      .populate({
-        path: "company",
-        select: "name address tel",
-      })
-      .populate({
-        path: "user",
-        select: "name email tel image",
-      });
-  }
+  query = Booking.find({ company: companyId });
+  query = query.select("-__v");
   try {
     const bookings = await query;
     res.status(200).json({

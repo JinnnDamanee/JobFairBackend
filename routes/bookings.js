@@ -46,13 +46,13 @@
 
 const express = require("express");
 const {
-    getBookings,
-    getBooking,
-    addBooking,
-    updateBooking,
-    deleteBooking,
-    getBookingsByUser,
-    getBookingsByCompany,
+  getBookings,
+  getBooking,
+  addBooking,
+  updateBooking,
+  deleteBooking,
+  getBookingsByUser,
+  getBookingsByCompany,
 } = require("../controllers/bookings");
 
 /**
@@ -117,9 +117,9 @@ const { protect, authorize } = require("../middleware/auth");
  */
 
 router
-    .route("/")
-    .get(protect, getBookings)
-    .post(protect, authorize("admin", "user"), addBooking);
+  .route("/")
+  .get(protect, getBookings)
+  .post(protect, authorize("admin", "user"), addBooking);
 
 /**
  * @swagger
@@ -206,10 +206,10 @@ router
  */
 
 router
-    .route("/:id")
-    .get(protect, getBooking)
-    .put(protect, authorize("admin", "user"), updateBooking)
-    .delete(protect, authorize("admin", "user"), deleteBooking);
+  .route("/:id")
+  .get(protect, getBooking)
+  .put(protect, authorize("admin", "user"), updateBooking)
+  .delete(protect, authorize("admin", "user"), deleteBooking);
 
 /**
  * @swagger
@@ -264,6 +264,6 @@ router
  */
 
 router.get("/users/:id", protect, getBookingsByUser);
-router.get("/companies/:id", protect, getBookingsByCompany);
+router.get("/companies/:id", getBookingsByCompany);
 
 module.exports = router;
