@@ -172,7 +172,7 @@ exports.getBookingsByUser = async (req, res) => {
   }
   query = Booking.find({ user: userId }).populate({
     path: "company",
-    select: "name address tel image",
+    select: "name position address tel image",
   });
   try {
     const bookings = await query;
